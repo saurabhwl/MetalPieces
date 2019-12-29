@@ -4,7 +4,6 @@ import android.media.MediaPlayer;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
@@ -31,7 +30,7 @@ public class MainTeleop extends OpMode {
     private TeleOpExtras myExtras;
     private ElapsedTime runtime;
     private int position;
-    private double poe;
+    private int poe;
     Servo stopper;
 
     /*
@@ -84,7 +83,10 @@ public class MainTeleop extends OpMode {
 
 
         MediaPlayer ny;
-        telemetry.addData("Spinny Val: ", myExtras.spinny.getCurrentPosition());
+        telemetry.addData("SpinnyL Current Val: ", myExtras.spinnyL.getCurrentPosition());
+        telemetry.addData("SpinnyR Current Val: ", myExtras.spinnyR.getCurrentPosition());
+        telemetry.addData("SpinnyL Target Val: ", myExtras.spinnyL.getTargetPosition());
+        telemetry.addData("SpinnyR Target Val: ", myExtras.spinnyR.getTargetPosition());
         driveMotors();
         Extras();
         // Show the elapsed game time and wheel power.
@@ -106,60 +108,51 @@ public class MainTeleop extends OpMode {
         } else {
             myExtras.intakeR.setPower(0);
         }
-/*
+//        if (gamepad2.left_bumper) {
+//            myExtras.lift.setPower(.9);
+//        } else if (gamepad2.right_bumper) {
+//            myExtras.lift.setPower(-0.48);
+//        } else {
+//            myExtras.lift.setPower(0);
+//            myExtras.lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        }
+//        if (gamepad2.b){
+////            if (myExtras.spinny.getCurrentPosition() < 120) {
+////                myExtras.spinny.setPower(1);
+////            else {
+////                myExtras.spinny.setPower(-0.1);
+////            }
+////            myExtras.spinny.setTargetPosition(20);
+////            myExtras.spinny.setPower(0.4);
+//
+//        }
+//        else if (gamepad2.y) {
+////            if (myExtras.spinny.getCurrentPosition() > 90) {
+////                myExtras.spinny.setPower(-1);
+//            // }
+//            //else {
+////                if (myExtras.spinny.getCurrentPosition() > 105) {
+////                    myExtras.spinny.setPower(-0.2);
+////                }
+////                else {
+////                    myExtras.spinny.setPower(0.2);
+//            myExtras.spinny.setTargetPosition(40);
+//            myExtras.spinny.setPower(0.5);
 
-B   dad
-E   please
-A   come
-N   back
-S   .
-
-*/
-        if (gamepad2.left_bumper) {
-            myExtras.lift.setPower(.9);
-        } else if (gamepad2.right_bumper) {
-            myExtras.lift.setPower(-0.48);
-        } else {
-            myExtras.lift.setPower(0);
-            myExtras.lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
-        if (gamepad2.b){
+//        }
+//        else if (gamepad2.x){
 //            if (myExtras.spinny.getCurrentPosition() < 120) {
 //                myExtras.spinny.setPower(1);
 //            else {
 //                myExtras.spinny.setPower(-0.1);
 //            }
-            myExtras.spinny.setTargetPosition(20);
-            myExtras.spinny.setPower(0.4);
-
-        }
-        else if (gamepad2.y) {
-//            if (myExtras.spinny.getCurrentPosition() > 90) {
-//                myExtras.spinny.setPower(-1);
-            // }
-            //else {
-//                if (myExtras.spinny.getCurrentPosition() > 105) {
-//                    myExtras.spinny.setPower(-0.2);
-//                }
-//                else {
-//                    myExtras.spinny.setPower(0.2);
-            myExtras.spinny.setTargetPosition(40);
-            myExtras.spinny.setPower(0.5);
-
-        }
-        else if (gamepad2.x){
-//            if (myExtras.spinny.getCurrentPosition() < 120) {
-//                myExtras.spinny.setPower(1);
-//            else {
-//                myExtras.spinny.setPower(-0.1);
-//            }
-            myExtras.spinny.setTargetPosition(179);
-            myExtras.spinny.setPower(0.4);
-        }
-        else {
-            myExtras.spinny.setPower(0);
-            myExtras.spinny.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        }
+//            myExtras.spinny.setTargetPosition(179);
+//            myExtras.spinny.setPower(0.4);
+//        }
+//        else {
+//            myExtras.spinny.setPower(0);
+//            myExtras.spinny.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        }
 
         if (gamepad1.y){
             myExtras.claw.setPosition(0);
@@ -174,23 +167,26 @@ S   .
             myExtras.foundationR.setPosition(1);
         }
         if (gamepad2.dpad_up) {
-            poe = poe + 0.1;
-            myExtras.spinny.setPower(poe);
-
+            poe = poe + 1;
+            myExtras.spinnyL.setTargetPosition(poe);
+            myExtras.spinnyR.setTargetPosition(poe);
+            myExtras.spinnyL.setPower(1);
+            myExtras.spinnyR.setPower(1);
         }
         else if (gamepad2.dpad_down) {
-            poe = poe - 0.1;
-            myExtras.spinny.setPower(poe);
-        }
-        else if (gamepad2.dpad_left) {
-
+            poe = poe - 1;
+            myExtras.spinnyL.setTargetPosition(poe);
+            myExtras.spinnyR.setTargetPosition(poe);
+            myExtras.spinnyL.setPower(1);
+            myExtras.spinnyR.setPower(1);
         }
         else {
-            poe = 0;
-            myExtras.spinny.setPower(poe);
-            myExtras.spinny.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+            poe = myExtras.spinnyL.getCurrentPosition();
+            myExtras.spinnyL.setTargetPosition(poe);
+            myExtras.spinnyR.setTargetPosition(poe);
+            myExtras.spinnyL.setPower(1);
+            myExtras.spinnyR.setPower(1);
         }
-
 
     }
 

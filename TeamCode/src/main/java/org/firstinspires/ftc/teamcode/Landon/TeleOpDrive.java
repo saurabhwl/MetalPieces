@@ -7,7 +7,6 @@ package org.firstinspires.ftc.teamcode.Landon;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 
-
 public class TeleOpDrive {
     public HardwareMap mHardwareMap;
     public DcMotor mFrontLeftMotor;
@@ -45,7 +44,6 @@ public class TeleOpDrive {
 
         mBackLeftMotor.setDirection(DcMotor.Direction.REVERSE);
         mFrontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-
-
+        
     }
 }

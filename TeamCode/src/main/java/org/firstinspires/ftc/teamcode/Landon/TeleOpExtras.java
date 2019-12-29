@@ -12,8 +12,9 @@ public class TeleOpExtras {
     public HardwareMap mHardwareMap;
     public DcMotor intakeL;
     public DcMotor intakeR;
-    public DcMotor lift;
-    public DcMotor spinny;
+//    public DcMotor lift;
+    public DcMotor spinnyL;
+    public DcMotor spinnyR;
     public Servo claw;
     public Servo foundationL;
     public Servo foundationR;
@@ -28,8 +29,9 @@ public class TeleOpExtras {
 
         intakeL = mHardwareMap.get(DcMotor.class, "intakeL");
         intakeR = mHardwareMap.get(DcMotor.class, "intakeR");
-        lift = mHardwareMap.get(DcMotor.class, "lift");
-        spinny = mHardwareMap.get(DcMotor.class, "spinny");
+//        lift = mHardwareMap.get(DcMotor.class, "lift");
+        spinnyL = mHardwareMap.get(DcMotor.class, "spinnyL");
+        spinnyR = mHardwareMap.get(DcMotor.class, "spinnyR");
         claw = mHardwareMap.servo.get("claw");
         foundationL = mHardwareMap.servo.get("foundationL");
         foundationR = mHardwareMap.servo.get("foundationR");
@@ -38,16 +40,21 @@ public class TeleOpExtras {
         claw.setPosition(0);
         foundationL.setPosition(0);
         foundationR.setPosition(1);
-        spinny.setTargetPosition(0);
+        spinnyL.setTargetPosition(0);
+        spinnyR.setTargetPosition(0);
         intakeL.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         intakeR.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        spinny.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        spinny.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+//        lift.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+//        lift.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        spinnyL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        spinnyR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        spinnyL.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        spinnyR.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeL.setDirection(DcMotor.Direction.REVERSE);
-        spinny.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        spinny.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        spinnyL.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        spinnyR.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        spinnyL.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        spinnyR.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
     }
 }
