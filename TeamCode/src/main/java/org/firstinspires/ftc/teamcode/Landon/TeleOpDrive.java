@@ -42,8 +42,8 @@ public class TeleOpDrive {
         mBackLeftMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         mBackRightMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        mBackLeftMotor.setDirection(DcMotor.Direction.REVERSE);
-        mFrontLeftMotor.setDirection(DcMotor.Direction.REVERSE);
+        mBackRightMotor.setDirection(DcMotor.Direction.REVERSE);
+        mFrontRightMotor.setDirection(DcMotor.Direction.REVERSE);
         
     }
 }

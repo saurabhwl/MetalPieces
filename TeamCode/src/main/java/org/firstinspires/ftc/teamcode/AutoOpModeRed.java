@@ -15,7 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name="MPAutoRed", group="MetalPieces")
+@Autonomous(name="MPAutoRedOLD", group="MetalPieces")
 public class AutoOpModeRed extends LinearOpMode {
     //
     DcMotor frontleft;

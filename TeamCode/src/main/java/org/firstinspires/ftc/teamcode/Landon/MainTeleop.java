@@ -95,18 +95,22 @@ public class MainTeleop extends OpMode {
     private void Extras() {
 
         if (Math.abs(gamepad2.left_trigger) > 0.4) {
-            myExtras.intakeL.setPower(-1.0);
+            myExtras.intakeL.setPower(-.7);
         } else if (Math.abs(gamepad2.right_trigger) > 0.4) {
-            myExtras.intakeL.setPower(1.0);
+            myExtras.intakeL.setPower(.7);
         } else {
             myExtras.intakeL.setPower(0);
         }
         if (Math.abs(gamepad2.left_trigger) > 0.4) {
-            myExtras.intakeR.setPower(-1.0);
+            myExtras.intakeR.setPower(-.7);
         } else if (Math.abs(gamepad2.right_trigger) > 0.4) {
-            myExtras.intakeR.setPower(1.0);
+            myExtras.intakeR.setPower(.7);
         } else {
             myExtras.intakeR.setPower(0);
+        }
+        if (gamepad2.x) {
+            myExtras.intakeL.setPower(-1);
+            myExtras.intakeR.setPower(-1);
         }
 //        if (gamepad2.left_bumper) {
 //            myExtras.lift.setPower(.9);
@@ -154,9 +158,9 @@ public class MainTeleop extends OpMode {
 //            myExtras.spinny.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 //        }
 
-        if (gamepad1.y){
+        if (gamepad2.y){
             myExtras.claw.setPosition(0);
-        } else if (gamepad1.a){
+        } else if (gamepad2.a){
             myExtras.claw.setPosition(1);
         }
         if (gamepad1.left_bumper) {
@@ -196,15 +200,15 @@ public class MainTeleop extends OpMode {
         double r = gamepad1.right_stick_x;
 
         if (gamepad1.dpad_up) {
-            y = -0.250;
-        } else if (gamepad1.dpad_down) {
             y = 0.250;
+        } else if (gamepad1.dpad_down) {
+            y = -0.250;
         }
 
         if (gamepad1.dpad_left) {
-            x = 0.250;
-        } else if (gamepad1.dpad_right) {
             x = -0.250;
+        } else if (gamepad1.dpad_right) {
+            x = 0.250;
         }
 
         if (Math.abs(y) <= 0.10) {
