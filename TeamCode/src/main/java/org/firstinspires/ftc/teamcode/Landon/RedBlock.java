@@ -11,10 +11,17 @@ import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
-
-@Autonomous(name="Block Red", group="Landon")
-public class BlockRed extends LinearOpMode {
+import org.openftc.easyopencv.OpenCvCamera;
+import org.openftc.easyopencv.OpenCvCameraRotation;
+import org.openftc.easyopencv.OpenCvInternalCamera;
+@Autonomous(name = "Red Block")
+public class RedBlock extends LinearOpMode {
     //
+    protected OpenCvCamera phoneCam;
+    String Park = "Inner";
+    String Grab = "Both";
+    String Place = "Yes";
+    String SkystonePose = "Left";
     private TeleOpDrive myDrive;
     private TeleOpExtras myExtras;
 
@@ -22,22 +29,12 @@ public class BlockRed extends LinearOpMode {
     DcMotor frontright;
     DcMotor backleft;
     DcMotor backright;
-    //    DcMotor horizontal;
-//    DcMotor lift;
-//    DcMotor intakeL;
-//    DcMotor intakeR;
-//
-//    Servo claw;
-//    Servo foundation;
-//    Servo stopper;
     //28 * 20 / (2ppi * 4.125)
-    Double width = 16.0; //inches
     Integer cpr = 28; //counts per rotation
     Integer gearratio = 40;
     Double diameter = 4.125;
-    Double cpi = (cpr * gearratio)/(Math.PI * diameter); //counts per inch, 28cpr * gear ratio / (2 * pi * diameter (in inches, in the center))
-    Double bias = 0.8
-            ;//default 0.8
+    Double cpi = (cpr * gearratio) / (Math.PI * diameter); //counts per inch, 28cpr * gear ratio / (2 * pi * diameter (in inches, in the center))
+    Double bias = 0.8;//default 0.8
     Double meccyBias = 0.9;//change to adjust only strafing movement
     //
     Double conversion = cpi * bias;
@@ -48,7 +45,59 @@ public class BlockRed extends LinearOpMode {
     Acceleration gravity;
     //
 
-    public void runOpMode(){
+    public void runOpMode() {
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK, cameraMonitorViewId);
+
+        // OR...  Do Not Activate the Camera Monitor View
+        //phoneCam = new OpenCvInternalCamera(OpenCvInternalCamera.CameraDirection.BACK);
+
+        /*
+         * Open the connection to the camera device
+         */
+        phoneCam.openCameraDevice();
+
+        LocaterPipline pipline = new LocaterPipline();
+        phoneCam.setPipeline(pipline);
+
+        phoneCam.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT);
+
+
+        while (!opModeIsActive()) {
+
+            telemetry.addData("Park Location", Park);
+            telemetry.addData("Which Stones", Grab);
+            telemetry.addData("Should we Place", Place);
+            telemetry.addData("Skystone Position", SkystonePose);
+
+            if (gamepad1.dpad_up) {
+                Place = "Yes";
+            } if (gamepad1.dpad_down) {
+                Place = "No";
+            } if (gamepad1.dpad_left) {
+                Park = "Outer";
+            } if (gamepad1.dpad_right) {
+                Park = "Inner";
+            } if (gamepad1.b){
+                Grab = "Both";
+            }  if (gamepad1.y){
+                Grab = "Front";
+            } if (gamepad1.a){
+                Grab = "Back";
+            }
+
+            if (pipline.location == SkystoneLocation.left) {
+                SkystonePose = "Right";
+
+            } else if (pipline.location == SkystoneLocation.middle) {
+                SkystonePose = "Middle";
+            } else if (pipline.location == SkystoneLocation.right) {
+                SkystonePose = "Left";
+            }
+            telemetry.update();
+
+        }
+        phoneCam.stopStreaming();
 
         myDrive = new TeleOpDrive(hardwareMap);
         myExtras = new TeleOpExtras(hardwareMap);
@@ -63,20 +112,7 @@ public class BlockRed extends LinearOpMode {
 
         initGyro();
 
-        //
-//        frontleft = hardwareMap.dcMotor.get("frontLeft");
-//        frontright = hardwareMap.dcMotor.get("frontRight");
-//        backleft = hardwareMap.dcMotor.get("backLeft");
-//        backright = hardwareMap.dcMotor.get("backRight");
 
-//        frontright.setDirection(DcMotorSimple.Direction.REVERSE);
-//        backright.setDirection(DcMotorSimple.Direction.REVERSE);
-        //
-
-//        intakeL = hardwareMap.dcMotor.get("intakeL");
-//        intakeR = hardwareMap.dcMotor.get("intakeR");
-
-//        horizontal.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backleft.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         frontright.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
@@ -84,36 +120,17 @@ public class BlockRed extends LinearOpMode {
         myExtras.intakeL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         myExtras.intakeR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-        waitForStartify();
-
-        startIntakeing(10,1);
-        strafeToPosition(26,.4);
-        moveToPosition(6,1);
-        strafeToPosition(-11,.4);
-        moveToPosition(-32,1);
-        turnWithGyro(180 ,.3);
-        startIntakeing(5,-1);
-        moveToPosition(-4,1);
-        turnWithGyro(180 ,-.3);
-        moveToPosition(27,1);
-        strafeToPosition(11, .4);
-        startIntakeing(5,1);
-        moveToPosition(8,1);
-        strafeToPosition(-11,.4);
-        moveToPosition(-38,1);
-        turnWithGyro(180 ,.3);
-        startIntakeing(5,-1);
-        moveToPosition(-4,1);
-        turnWithGyro(180 ,-.3);
-        moveToPosition(8,0.5);
-
-
-    }
-    //
+        //
     /*
     This function's purpose is simply to drive forward or backward.
     To drive backward, simply make the inches input negative.
      */
+
+        waitForStartify();
+
+    }
+
+
 
     public void startIntakeing(long time, double power) {
         myExtras.intakeL.setPower(-power);
@@ -122,29 +139,16 @@ public class BlockRed extends LinearOpMode {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        myExtras.intakeR.setPower(-power);
+        myExtras.intakeR.setPower(power);
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
-    //    public void moveClaw(int ticks, double power){
-//        horizontal.setMode(DcMotor.RunMode.RESET_ENCODERS);
-//        horizontal.setTargetPosition(ticks);
-//        horizontal.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-//        horizontal.setPower(power);
-//        while (horizontal.isBusy())
-//        {
 //
-//        }
-//        horizontal.setPower(0);
-//        horizontal.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-//
-//    }
-//    public void raiseLift(int ticks, double power){
-//        lift.setMode(DcMotor.RunMode.RESET_ENCODERS);
+//    public void Place(int ticks, double power){
+//        .setMode(DcMotor.RunMode.RESET_ENCODERS);
 //        lift.setTargetPosition(ticks);
 //        lift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 //        lift.setPower(power);
@@ -177,6 +181,7 @@ public class BlockRed extends LinearOpMode {
 //    public void unStop() {
 //        stopper.setPosition(0);
 //    }
+
     public void moveToPosition(double inches, double speed){
         //
         int move = (int)(Math.round(inches*conversion));
@@ -417,5 +422,83 @@ public class BlockRed extends LinearOpMode {
         frontright.setPower(-input);
         backright.setPower(-input);
     }
+    public void Park () {
+        switch (Park) {
+            case "Inner":
+                //Type You Inner Park
+                break;
+            case "Outer":
+                //Type You Outer Park
+                break;
+        }
+    }
+    public void Place(){
+        switch (Place) {
+            case "Yes":
+                //Type How To Place
+                break;
+            case "No":
+                //Type How To not place
+                break;
+        }
+    }
+    public void SkystonePose(){
+        switch (Place) {
+
+        }
+    }
+
+    private void Front () {
+        switch (SkystonePose){
+            case "Left":
+                break;
+            case "Middle":
+                break;
+            case "Right":
+                break;
+        }
+
+    }
+    private void Both () {
+        switch (SkystonePose) {
+            case "Left":
+                break;
+            case "Middle":
+                break;
+            case "Right":
+                break;
+
+        }
+    }
+    private void Back () {
+        switch (SkystonePose){
+            case "Left":
+                moveToPosition(16,.2);
+                strafeToPosition(-48,.2);
+                break;
+            case "Middle":
+                moveToPosition(8,.2);
+                strafeToPosition(-48,.2);
+                break;
+            case "Right":
+                strafeToPosition(-48,.2);
+                break;
+            }
+    }
+
+    private void Drive_to_Skystone (){
+        switch(Grab){
+            case "Front":
+                Front();
+                break;
+            case "Both":
+                Both();
+                break;
+            case "Back":
+                Back();
+                break;
+        }
+    }
+
     //
 }

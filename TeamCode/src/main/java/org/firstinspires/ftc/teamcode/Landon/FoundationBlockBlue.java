@@ -12,8 +12,8 @@ import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 
-@Autonomous(name="Block Red", group="Landon")
-public class BlockRed extends LinearOpMode {
+@Autonomous(name="Foundation Block Blue", group="Landon")
+public class FoundationBlockBlue extends LinearOpMode {
     //
     private TeleOpDrive myDrive;
     private TeleOpExtras myExtras;
@@ -85,27 +85,29 @@ public class BlockRed extends LinearOpMode {
         myExtras.intakeR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         waitForStartify();
-
-        startIntakeing(10,1);
-        strafeToPosition(26,.4);
-        moveToPosition(6,1);
-        strafeToPosition(-11,.4);
-        moveToPosition(-32,1);
-        turnWithGyro(180 ,.3);
-        startIntakeing(5,-1);
-        moveToPosition(-4,1);
-        turnWithGyro(180 ,-.3);
-        moveToPosition(27,1);
-        strafeToPosition(11, .4);
+        //
+        strafeToPosition(-1,.4);
+        moveToPosition(16,1);
+        grabFoundation();
+        sleep(1000);
+        strafeToPosition(8, .4);
+        moveToPosition(-6, 0.6);
+        turnWithGyro(90, -0.2);
+        moveToPosition(3,1);
+        ungrabFoundation();
+        sleep(1000);
+        strafeToPosition(3,.4);
+        moveToPosition(-19,1);
+        turnWithGyro(180,.3);
+        moveToPosition(23,1);
+        strafeToPosition(-14, .4);
         startIntakeing(5,1);
         moveToPosition(8,1);
-        strafeToPosition(-11,.4);
-        moveToPosition(-38,1);
+        strafeToPosition(8,.4);
+        moveToPosition(-47,1);
         turnWithGyro(180 ,.3);
         startIntakeing(5,-1);
-        moveToPosition(-4,1);
-        turnWithGyro(180 ,-.3);
-        moveToPosition(8,0.5);
+        moveToPosition(-12,1);
 
 
     }
@@ -122,7 +124,7 @@ public class BlockRed extends LinearOpMode {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        myExtras.intakeR.setPower(-power);
+        myExtras.intakeR.setPower(power);
         try {
             Thread.sleep(time);
         } catch (InterruptedException e) {

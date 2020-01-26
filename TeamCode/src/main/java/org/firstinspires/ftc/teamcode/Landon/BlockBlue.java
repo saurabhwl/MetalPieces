@@ -87,25 +87,26 @@ public class BlockBlue extends LinearOpMode {
         waitForStartify();
 
         startIntakeing(10,1);
-        strafeToPosition(26,.4);
-        moveToPosition(6,1);
-        strafeToPosition(-10,.4);
+        strafeToPosition(-28,.4);
+        moveToPosition(4,1);
+        strafeToPosition(11,.4);
         moveToPosition(-32,1);
         turnWithGyro(180 ,.3);
         startIntakeing(5,-1);
         moveToPosition(-4,1);
         turnWithGyro(180 ,-.3);
         moveToPosition(27,1);
-        strafeToPosition(8, .4);
+        strafeToPosition(-11, .4);
         startIntakeing(5,1);
-        moveToPosition(8,1);
-        strafeToPosition(-8,.4);
+        moveToPosition(6,1);
+        strafeToPosition(11,.4);
         moveToPosition(-38,1);
         turnWithGyro(180 ,.3);
         startIntakeing(5,-1);
         moveToPosition(-4,1);
         turnWithGyro(180 ,-.3);
-        moveToPosition(9,0.5);
+        moveToPosition(8,0.5);
+
 
 
     }
@@ -261,7 +262,7 @@ public class BlockBlue extends LinearOpMode {
         //
         turnWithEncoder(speedDirection);
         //
-        if (Math.abs(firsta - firstb) < 11) {
+        if (Math.abs(firsta - firstb) < 11) { //EXECUTE OPERATION            B E A N_69
             while (!(firsta < yaw && yaw < firstb) && opModeIsActive()) {//within range?
                 angles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
                 gravity = imu.getGravity();

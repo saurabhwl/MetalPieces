@@ -87,16 +87,29 @@ public class FoundationBlue extends LinearOpMode {
         waitForStartify();
         //
 
-        moveToPosition(20,.2);
+//        moveToPosition(20,.2);
+//        grabFoundation();
+//        sleep(2000);
+//        strafeToPosition(5, .2);
+//        moveToPosition(-15, .2);
+//        turnWithGyro(90, -0.2);
+//        moveToPosition(3,.2);
+//        ungrabFoundation();
+//        sleep(2000);
+//        strafeToPosition(7,.2);
+//        moveToPosition(-19,.2);
+
+
+        moveToPosition(16,1);
         grabFoundation();
-        sleep(2000);
-        strafeToPosition(5, .2);
-        moveToPosition(-15, .2);
+        sleep(1000);
+        strafeToPosition(6, .4);
+        moveToPosition(-6, 0.6);
         turnWithGyro(90, -0.2);
-        moveToPosition(3,.2);
+        moveToPosition(3,1);
         ungrabFoundation();
         sleep(2000);
-        strafeToPosition(9,.2);
+        strafeToPosition(3,.4);
         moveToPosition(-19,.2);
 
 

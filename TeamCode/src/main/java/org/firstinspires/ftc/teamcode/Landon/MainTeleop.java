@@ -30,7 +30,9 @@ public class MainTeleop extends OpMode {
     private TeleOpExtras myExtras;
     private ElapsedTime runtime;
     private int position;
-    private int poe;
+    public int poe;
+
+//    private int poe;
     Servo stopper;
 
     /*
@@ -81,12 +83,23 @@ public class MainTeleop extends OpMode {
         telemetry.addData("BR Val: ", myDrive.mBackRightMotor.getCurrentPosition());
         telemetry.addData("BL Val: ", myDrive.mBackLeftMotor.getCurrentPosition());
 
+//        if (poe < -11 || poe > 160) {
+//           if(poe < -11) {
+//               poe = -11;
+//           }
+//           if(poe > 160){
+//               poe = 160;
+//           }
+//        }
 
         MediaPlayer ny;
         telemetry.addData("SpinnyL Current Val: ", myExtras.spinnyL.getCurrentPosition());
         telemetry.addData("SpinnyR Current Val: ", myExtras.spinnyR.getCurrentPosition());
         telemetry.addData("SpinnyL Target Val: ", myExtras.spinnyL.getTargetPosition());
         telemetry.addData("SpinnyR Target Val: ", myExtras.spinnyR.getTargetPosition());
+        telemetry.addData("Poe value: ", poe);
+        telemetry.addData("TEST FORCE DRIVE", poe);
+
         driveMotors();
         Extras();
         // Show the elapsed game time and wheel power.
@@ -184,15 +197,25 @@ public class MainTeleop extends OpMode {
             myExtras.spinnyL.setPower(1);
             myExtras.spinnyR.setPower(1);
         }
-        else {
-            poe = myExtras.spinnyL.getCurrentPosition();
-            myExtras.spinnyL.setTargetPosition(poe);
-            myExtras.spinnyR.setTargetPosition(poe);
-            myExtras.spinnyL.setPower(1);
-            myExtras.spinnyR.setPower(1);
-        }
+//        else {
+//            if (poe < -11 || poe > 160) {
+//                if(poe < -11) {
+//                    poe = -11;
+//                }
+//                if(poe > 160){
+//                    poe = 160;
+//                }
+//            }
+            else {
+                poe = myExtras.spinnyL.getCurrentPosition();
 
-    }
+                myExtras.spinnyL.setTargetPosition(poe);
+                myExtras.spinnyR.setTargetPosition(poe);
+                myExtras.spinnyL.setPower(1);
+                myExtras.spinnyR.setPower(1);
+            }
+
+        }
 
     private void driveMotors() {
         double y = -gamepad1.left_stick_y;
@@ -238,10 +261,10 @@ public class MainTeleop extends OpMode {
             BLPower /= max;
         }
 
-        myDrive.mFrontLeftMotor.setPower(.75 *FLPower);
-        myDrive.mFrontRightMotor.setPower(.75 *FRPower);
-        myDrive.mBackRightMotor.setPower(.75 *BRPower);
-        myDrive.mBackLeftMotor.setPower(.75 *BLPower);
+        myDrive.mFrontLeftMotor.setPower(1 *FLPower);
+        myDrive.mFrontRightMotor.setPower(1 *FRPower);
+        myDrive.mBackRightMotor.setPower(1 *BRPower);
+        myDrive.mBackLeftMotor.setPower(1 *BLPower);
 
     }
 
